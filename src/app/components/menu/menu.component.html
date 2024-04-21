@@ -1,0 +1,44 @@
+<header class="header">
+  <div class="header__top">
+    <app-header></app-header>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10">
+        <nav class="header__menu">
+          <ul>
+            <li class="active"><a href="/">Inicio</a></li>
+            <li><a href="/carrito">Carrito Compras</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="header__cart">
+        <ul>
+          <li>
+            <a
+              (click)="resumenPedido()"
+              class="btn btn-primary"
+              style="color: white"
+              >Actualizar Pedido <i class="fa fa-shopping-bag"></i
+            ></a>
+          </li>
+        </ul>
+        <ul *ngIf="total > 0">
+          <li>
+            <a href="#"
+              ><i class="fa fa-shopping-bag"></i>
+              <span>{{ carrito.length }}</span></a
+            >
+          </li>
+        </ul>
+        <div *ngIf="total > 0" class="header__cart__price">
+          item: <span>${{ total }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="humberger__open">
+      <i class="fa fa-bars"></i>
+    </div>
+  </div>
+</header>
+<app-secciones></app-secciones>

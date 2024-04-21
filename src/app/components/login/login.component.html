@@ -1,0 +1,21 @@
+<div class="contenedor-login">
+<div class="wrapper">
+    <div class="title-tienda">
+       Login Tienda Alimentos
+    </div>
+    <form (submit)="login()">
+        <div class="field">
+           <input type="text" [(ngModel)]="username" name="username" required>
+           <label>Usuario</label>
+        </div>
+        <div class="field">
+           <input type="password" [(ngModel)]="password" name="password" required>
+           <label>Password</label>
+        </div>     
+        <div class="field">
+           <input type="submit" value="Login">
+        </div>     
+     </form>
+     
+ </div>
+</div>
