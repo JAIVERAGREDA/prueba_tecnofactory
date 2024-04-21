@@ -3,7 +3,7 @@ import { DataService } from 'src/app/services/dataService';
 
 @Component({
   selector: 'app-secciones',
-  templateUrl: './secciones.component.html',
+  templateUrl:'./secciones.component.html',
   styleUrls: ['./secciones.component.css'],
 })
 export class SeccionesComponent implements OnInit {

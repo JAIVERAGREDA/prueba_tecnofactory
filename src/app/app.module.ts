@@ -15,11 +15,16 @@ import { FormsModule } from '@angular/forms';
 import { AuthGuard } from './components/auth.guard';
 import { CarroCompraComponent } from './components/carro-compra/carro-compra.component';
 import { HeaderComponent } from './components/header/header.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AgregarAlimentoComponent } from './components/agregar-alimento/agregar-alimento.component';
+import { ListarProductosComponent } from './components/listar-productos/listar-productos.component';
 
 const routes: Routes = [   
   { path: 'login', component: LoginComponent },
   { path: 'carrito', component: CarroCompraComponent },
-  { path: '', component: MenuComponent }  
+  { path: '', component: MenuComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'listar-productos', component: ListarProductosComponent },   
 
 ];
 
@@ -32,7 +37,10 @@ const routes: Routes = [
     LoginComponent,
     FoteerComponent,
     CarroCompraComponent,
-    HeaderComponent        
+    HeaderComponent,
+    AdminComponent,
+    AgregarAlimentoComponent,
+    ListarProductosComponent        
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,24 @@
+<div class="container-fluid bg-light">
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <div class="header__top__left">
+          <ul>
+            <li><i class="fa fa-envelope"></i> jaiver.agreda010203@gmail.com</li>
+            <li>Tienda Virtual Tecnofactory</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <div class="header__top__right">
+          <div class="header__top__right__auth" *ngIf="currentUser">
+            <i class="fa fa-user"></i> {{ isAdmin ? 'Admin' : currentUser.username }}
+          </div>
+          <div class="header__top__right__auth" *ngIf="currentUser">
+            <span></span><a (click)="cerrarSesion()">
+              &nbsp;&nbsp;&nbsp;&nbsp;Cerrar Sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

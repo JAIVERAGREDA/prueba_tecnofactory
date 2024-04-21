@@ -1,40 +1,52 @@
-// auth.service.ts
- 
-import { Injectable } from '@angular/core';
- 
+import { Injectable, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
- 
-  constructor() { }
- 
-  // Método para iniciar sesión
-  login(username: string, password: string): boolean {
-    console.log(username, "mi usarname");
-    console.log(password, "mi password");
-    
+  logoutEvent: EventEmitter<void> = new EventEmitter<void>();
+
+  constructor(private router: Router) { }
+
+  loginUser(username: string, password: string): boolean {
     if (username === 'jaiver' && password === '12345678') {
-      localStorage.setItem('currentUser', JSON.stringify({ username, token: 'token-de-autenticacion' }));
+      const user = { username: username, token: 'token-de-autenticacion' };
+      localStorage.setItem('currentUser', JSON.stringify(user));
       return true;
     } else {
       return false;
     }
   }
- 
-  // Método para cerrar sesión
+
   logout(): void {
     localStorage.removeItem('currentUser');
+    this.logoutEvent.emit();
   }
- 
-  // Método para verificar si el usuario está autenticado
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('currentUser');
   }
- 
-  // Método para obtener el usuario actual
+
   getCurrentUser(): any {
     const user = localStorage.getItem('currentUser');
+    console.log(user);
     return user ? JSON.parse(user) : null;
+  }
+
+ loginAdmin(username: string, password: string): boolean {
+  // Verificamos que las credenciales sean del administrador
+  if (username === 'admin' && password === 'admin') {
+    // Marcar al administrador como autenticado
+    const user = { username: username, token: 'token-de-autenticacion' };
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    return true;
+  }
+  return false;
+}
+
+  isLoggedInAsAdmin(): boolean {    
+    const user = this.getCurrentUser();
+    return user && user.username === 'admin'; 
   }
 }
