@@ -77,16 +77,18 @@ export class ListarProductosComponent implements OnInit {
         // Crear un objeto con los datos editados
         const alimentoEditadoNuevo = { id: alimentoEditado.id, nombre, descripcion, precio, stock };
         console.log('Alimento editado nuevo:', alimentoEditadoNuevo);
-        this.paginaActual = 1;
-  
+          
         // Realizar la solicitud PUT al servidor
-        return this.alimentosService.editarAlimentoMockyio(alimentoEditadoNuevo).toPromise(); // Convertir Observable a Promise
+        this.alimentosService.editarAlimentoMockyio(alimentoEditadoNuevo).subscribe(
+          res => {this.actualizarProducto(alimentoEditadoNuevo.id, alimentoEditadoNuevo)}, error =>{console.log(error)}
+          
+        ); 
+        
       }
     }).then((result: any) => {
       if (result.isConfirmed) {
         Swal.fire('¡Actualizado!', 'El alimento ha sido actualizado correctamente.', 'success');
-        // Actualizar la lista de productos
-        this.obtenerProductos();
+               
       }
     }).catch((error: any) => {
       // Manejar el error si es necesario
@@ -94,6 +96,17 @@ export class ListarProductosComponent implements OnInit {
       Swal.fire('Error', 'Hubo un problema al actualizar el alimento.', 'error');
     });
   }
+
+  actualizarProducto(id: number, nuevosDatos: any): void {
+    const indice = this.productos.findIndex(producto => producto.id === id);
+    if (indice !== -1) {
+        this.productos[indice] = { ...this.productos[indice], ...nuevosDatos };
+        console.log("Producto actualizado:", this.productos[indice]);
+        console.log(this.productos)
+    } else {
+        console.log("No se encontró ningún producto con el ID proporcionado.");
+    }
+}
 
   //Eliminar
   eliminarAlimento(id: string): void {
@@ -109,9 +122,10 @@ export class ListarProductosComponent implements OnInit {
       if (result.isConfirmed) {        
         this.alimentosService.eliminarAlimento(id).subscribe(
           (data: any) => {
-            console.log('Producto eliminado:', data);            
-            this.obtenerProductos();            
+            console.log('Producto eliminado:', data);          
+            this.eliminarProducto(Number.parseInt(id))          
             Swal.fire('¡Eliminado!', 'El producto ha sido eliminado.', 'success');
+            console.log(this.productos)
           },
           (error: any) => {
             console.error('Error al eliminar el producto:', error);            
@@ -121,6 +135,12 @@ export class ListarProductosComponent implements OnInit {
       }
     });
   }
+
+  eliminarProducto(id: number): void {
+    const indice = this.productos.findIndex(producto => producto.id === id);    
+    this.productos.splice(indice,1)
+    }
+
   
   //Crear nuevo producto
   crearNuevoProducto(): void {
@@ -163,6 +183,7 @@ export class ListarProductosComponent implements OnInit {
         );
       }
     });
-  }  
+  }
+    
 }
 
