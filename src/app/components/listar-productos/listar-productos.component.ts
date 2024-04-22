@@ -201,7 +201,7 @@ export class ListarProductosComponent implements OnInit {
         const stock = (document.getElementById('stock') as HTMLInputElement)
           .value;
         const nuevoProducto = { nombre, descripcion, precio, stock };
-        this.productos.push(nuevoProducto);
+        this.productos.unshift(nuevoProducto);
 
         const regex = /^[0-9]*$/;
         if (!regex.test(precio) || !regex.test(stock)) {
