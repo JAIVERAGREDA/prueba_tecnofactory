@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class HeaderComponent implements OnInit {
   currentUser: any;
   constructor(private authService: AuthService, ) {}
+  
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
   }

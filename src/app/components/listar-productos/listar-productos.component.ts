@@ -10,43 +10,51 @@ import { Observable } from 'rxjs';
   styleUrls: ['./listar-productos.component.css'],
 })
 export class ListarProductosComponent implements OnInit {
-  productos: any[] = [];
-  paginaActual: number = 1;
-  productosPorPagina: number = 10;
+  // Definición de variables de clase
+  productos: any[] = []; // Almacena la lista de productos
+  paginaActual: number = 1; // Página actual del paginador
+  productosPorPagina: number = 10; // Número de productos mostrados por página
 
+  // Constructor del componente
   constructor(
-    private alimentosService: AlimentosService,
-    private http: HttpClient
+    private alimentosService: AlimentosService, // Inyecta el servicio AlimentosService
+    private http: HttpClient // Inyecta HttpClient para realizar solicitudes HTTP
   ) {}
 
+  // Método ngOnInit, se ejecuta cuando el componente se inicia
   ngOnInit(): void {
-    this.obtenerProductos();
+    this.obtenerProductos();// Llama al método para obtener los productos
   }
 
+  // Método para obtener los productos
   obtenerProductos(): void {
+    // Utiliza el servicio AlimentosService para obtener los productos
     this.alimentosService.obtenerAlimentos().subscribe(
       (data: any) => {
-        this.productos = data.data.productos;
+        this.productos = data.data.productos; // Almacena los productos en la variable productos
       },
       (error: any) => {
-        console.error('Error al obtener productos:', error);
+        console.error('Error al obtener productos:', error); // Muestra un mensaje de error si ocurre algún problema al obtener los productos
       }
     );
   }
 
   //paginador
   cambiarPagina(nuevaPagina: number): void {
-    this.paginaActual = nuevaPagina;
+    this.paginaActual = nuevaPagina; // Actualiza la página actual del paginador
   }
 
+  // Método para obtener los productos paginados
   get totalPaginas(): number {
     return Math.ceil(this.productos.length / this.productosPorPagina);
   }
 
+  //Método para generar un array con las páginas disponibles
   get totalPaginasArray(): number[] {
     return Array.from({ length: this.totalPaginas }, (_, index) => index + 1);
   }
 
+  // Método para obtener los productos paginados
   get productosPaginados(): any[] {
     const indiceInicial = (this.paginaActual - 1) * this.productosPorPagina;
     const indiceFinal = indiceInicial + this.productosPorPagina;
