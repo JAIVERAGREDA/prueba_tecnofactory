@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent  {
+export class LoginComponent {
   username = '';
   password = '';
   constructor(private authService: AuthService, private router: Router) {}
@@ -25,7 +25,7 @@ export class LoginComponent  {
         title: 'Error!',
         text: 'Nombre de usuario o contraseña incorrectos',
         icon: 'error',
-        confirmButtonText: 'Cerrar'
+        confirmButtonText: 'Cerrar',
       });
     }
   }

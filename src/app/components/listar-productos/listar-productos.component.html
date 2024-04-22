@@ -1,15 +1,19 @@
 <app-admin></app-admin>
 
 <div class="container">
-  <h2 class="display-4 text-center mt-5 mb-4 font-weight-bold text-primary">Lista de Productos</h2>
+  <h2 class="display-4 text-center mt-5 mb-4 font-weight-bold text-primary">
+    Lista de Productos
+  </h2>
   <div class="text-end mb-3">
-    <button class="btn btn-primary" (click)="crearNuevoProducto()">Crear Nuevo Producto</button>
+    <button class="btn btn-primary" (click)="crearNuevoProducto()">
+      Crear Nuevo Producto
+    </button>
   </div>
   <div *ngIf="productos.length > 0; else noProductos">
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Nombre</th>          
+          <th scope="col">Nombre</th>
           <th scope="col">Precio</th>
           <th scope="col">Descripción</th>
           <th scope="col">Cantidad disponible</th>
@@ -18,14 +22,24 @@
       </thead>
       <tbody>
         <tr *ngFor="let producto of productos">
-          <td>{{ producto.nombre }}</td>          
+          <td>{{ producto.nombre }}</td>
           <td>{{ producto.precio }}</td>
           <td>{{ producto.descripcion }}</td>
           <td>{{ producto.stock }}</td>
           <td>
             <!-- Botones de acción -->
-            <button class="btn btn-primary btn-sm me-2" (click)="editarAlimento(producto)">Editar</button>
-            <button class="btn btn-danger btn-sm" (click)="eliminarAlimento(producto.id)">Eliminar</button>
+            <button
+              class="btn btn-primary btn-sm me-2"
+              (click)="editarAlimento(producto)"
+            >
+              Editar
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="eliminarAlimento(producto.id)"
+            >
+              Eliminar
+            </button>
           </td>
         </tr>
       </tbody>
@@ -33,13 +47,34 @@
     <nav aria-label="Page navigation">
       <ul class="pagination">
         <li class="page-item" [class.disabled]="paginaActual === 1">
-          <a class="page-link" href="#" (click)="cambiarPagina(paginaActual - 1)">Anterior</a>
+          <a
+            class="page-link"
+            href="#"
+            (click)="cambiarPagina(paginaActual - 1)"
+            >Anterior</a
+          >
         </li>
-        <li class="page-item" *ngFor="let numeroPagina of totalPaginasArray" [class.active]="numeroPagina === paginaActual">
-          <a class="page-link" href="#" (click)="cambiarPagina(numeroPagina)">{{ numeroPagina }}</a>
+        <li
+          class="page-item"
+          *ngFor="let numeroPagina of totalPaginasArray"
+          [class.active]="numeroPagina === paginaActual"
+        >
+          <a class="page-link" href="#" (click)="cambiarPagina(numeroPagina)">{{
+            numeroPagina
+          }}</a>
         </li>
-        <li class="page-item" [class.disabled]="paginaActual === productos.length / productosPorPagina">
-          <a class="page-link" href="#" (click)="cambiarPagina(paginaActual + 1)">Siguiente</a>
+        <li
+          class="page-item"
+          [class.disabled]="
+            paginaActual === productos.length / productosPorPagina
+          "
+        >
+          <a
+            class="page-link"
+            href="#"
+            (click)="cambiarPagina(paginaActual + 1)"
+            >Siguiente</a
+          >
         </li>
       </ul>
     </nav>

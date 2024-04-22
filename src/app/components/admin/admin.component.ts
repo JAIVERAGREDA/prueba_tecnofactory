@@ -5,15 +5,15 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
   currentUser: any;
   isAdmin: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     if (this.currentUser) {
       this.isAdmin = this.authService.isLoggedInAsAdmin();
@@ -21,7 +21,7 @@ export class AdminComponent implements OnInit {
   }
 
   cerrarSesion(): void {
-    this.authService.logout();    
+    this.authService.logout();
     this.router.navigate(['/']);
   }
 }

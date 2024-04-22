@@ -14,10 +14,7 @@ export class CarroCompraComponent implements OnInit {
   ngOnInit(): void {
     const carritoString = localStorage.getItem('carrito');
     if (carritoString) {
-      this.carrito = JSON.parse(carritoString);
-      console.log(this.carrito, 'data cariito');
-
-      /*  this.cantidadCompra carritoString.length; */
+      this.carrito = JSON.parse(carritoString);      
     }
 
     // Obtener el total del localStorage

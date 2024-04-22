@@ -20,7 +20,7 @@ export class MenuComponent implements OnInit {
     // Obtener el carrito del localStorage
     const carritoString = localStorage.getItem('carrito');
     if (carritoString) {
-      this.carrito = JSON.parse(carritoString);            
+      this.carrito = JSON.parse(carritoString);
     }
 
     // Obtener el total del localStorage
@@ -29,6 +29,4 @@ export class MenuComponent implements OnInit {
       this.total = JSON.parse(totalString);
     }
   }
-
-  
 }

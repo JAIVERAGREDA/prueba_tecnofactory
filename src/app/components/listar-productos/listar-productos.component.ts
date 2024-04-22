@@ -7,28 +7,26 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-listar-productos',
   templateUrl: './listar-productos.component.html',
-  styleUrls: ['./listar-productos.component.css']
+  styleUrls: ['./listar-productos.component.css'],
 })
 export class ListarProductosComponent implements OnInit {
   productos: any[] = [];
   paginaActual: number = 1;
-  productosPorPagina: number = 10;  
+  productosPorPagina: number = 10;
 
-  constructor(private alimentosService: AlimentosService, private http: HttpClient) { }
-  
-  
+  constructor(
+    private alimentosService: AlimentosService,
+    private http: HttpClient
+  ) {}
+
   ngOnInit(): void {
     this.obtenerProductos();
   }
 
   obtenerProductos(): void {
-    console.log('Obteniendo productos...');
-
     this.alimentosService.obtenerAlimentos().subscribe(
       (data: any) => {
-        console.log('Respuesta del servidor al obtener productos:', data);
         this.productos = data.data.productos;
-        console.log(this.productos)   //console.log('Productos actualizados:', this.productos);
       },
       (error: any) => {
         console.error('Error al obtener productos:', error);
@@ -44,7 +42,7 @@ export class ListarProductosComponent implements OnInit {
   get totalPaginas(): number {
     return Math.ceil(this.productos.length / this.productosPorPagina);
   }
-  
+
   get totalPaginasArray(): number[] {
     return Array.from({ length: this.totalPaginas }, (_, index) => index + 1);
   }
@@ -69,44 +67,76 @@ export class ListarProductosComponent implements OnInit {
       confirmButtonText: 'Guardar',
       cancelButtonText: 'Cancelar',
       preConfirm: () => {
-        const nombre = (document.getElementById('nombre') as HTMLInputElement).value;
-        const descripcion = (document.getElementById('descripcion') as HTMLInputElement).value;
-        const precio = (document.getElementById('precio') as HTMLInputElement).value;
-        const stock = (document.getElementById('stock') as HTMLInputElement).value;
-  
-        // Crear un objeto con los datos editados
-        const alimentoEditadoNuevo = { id: alimentoEditado.id, nombre, descripcion, precio, stock };
-        console.log('Alimento editado nuevo:', alimentoEditadoNuevo);
-          
-        // Realizar la solicitud PUT al servidor
-        this.alimentosService.editarAlimentoMockyio(alimentoEditadoNuevo).subscribe(
-          res => {this.actualizarProducto(alimentoEditadoNuevo.id, alimentoEditadoNuevo)}, error =>{console.log(error)}
-          
-        ); 
-        
-      }
-    }).then((result: any) => {
-      if (result.isConfirmed) {
-        Swal.fire('¡Actualizado!', 'El alimento ha sido actualizado correctamente.', 'success');
-               
-      }
-    }).catch((error: any) => {
-      // Manejar el error si es necesario
-      console.error('Error al editar el alimento:', error);
-      Swal.fire('Error', 'Hubo un problema al actualizar el alimento.', 'error');
-    });
+        const nombre = (document.getElementById('nombre') as HTMLInputElement)
+          .value;
+        const descripcion = (
+          document.getElementById('descripcion') as HTMLInputElement
+        ).value;
+        const precio = (document.getElementById('precio') as HTMLInputElement)
+          .value;
+        const stock = (document.getElementById('stock') as HTMLInputElement)
+          .value;
+
+        const regex = /^[0-9]*$/;
+        if (!regex.test(precio) || !regex.test(stock)) {
+          Swal.showValidationMessage('Precio y stock deben ser números');
+          return false;
+        }
+
+        // Crea un objeto con los datos editados
+        const alimentoEditadoNuevo = {
+          id: alimentoEditado.id,
+          nombre,
+          descripcion,
+          precio,
+          stock,
+        };
+
+        // Realiza la solicitud PUT al servidor
+        this.alimentosService
+          .editarAlimentoMockyio(alimentoEditadoNuevo)
+          .subscribe(
+            (res) => {
+              this.actualizarProducto(
+                alimentoEditadoNuevo.id,
+                alimentoEditadoNuevo
+              );
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        return true;
+      },
+    })
+      .then((result: any) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            '¡Actualizado!',
+            'El alimento ha sido actualizado correctamente.',
+            'success'
+          );
+        }
+      })
+      .catch((error: any) => {
+        // Manejar el error si es necesario
+        console.error('Error al editar el alimento:', error);
+        Swal.fire(
+          'Error',
+          'Hubo un problema al actualizar el alimento.',
+          'error'
+        );
+      });
   }
 
   actualizarProducto(id: number, nuevosDatos: any): void {
-    const indice = this.productos.findIndex(producto => producto.id === id);
+    const indice = this.productos.findIndex((producto) => producto.id === id);
     if (indice !== -1) {
-        this.productos[indice] = { ...this.productos[indice], ...nuevosDatos };
-        console.log("Producto actualizado:", this.productos[indice]);
-        console.log(this.productos)
+      this.productos[indice] = { ...this.productos[indice], ...nuevosDatos };
     } else {
-        console.log("No se encontró ningún producto con el ID proporcionado.");
+      console.log('No se encontró ningún producto con el ID proporcionado.');
     }
-}
+  }
 
   //Eliminar
   eliminarAlimento(id: string): void {
@@ -117,19 +147,25 @@ export class ListarProductosComponent implements OnInit {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
-      if (result.isConfirmed) {        
+      if (result.isConfirmed) {
         this.alimentosService.eliminarAlimento(id).subscribe(
           (data: any) => {
-            console.log('Producto eliminado:', data);          
-            this.eliminarProducto(Number.parseInt(id))          
-            Swal.fire('¡Eliminado!', 'El producto ha sido eliminado.', 'success');
-            console.log(this.productos)
+            this.eliminarProducto(Number.parseInt(id));
+            Swal.fire(
+              '¡Eliminado!',
+              'El producto ha sido eliminado.',
+              'success'
+            );
           },
           (error: any) => {
-            console.error('Error al eliminar el producto:', error);            
-            Swal.fire('Error', 'Ha ocurrido un error al eliminar el producto.', 'error');
+            console.error('Error al eliminar el producto:', error);
+            Swal.fire(
+              'Error',
+              'Ha ocurrido un error al eliminar el producto.',
+              'error'
+            );
           }
         );
       }
@@ -137,11 +173,10 @@ export class ListarProductosComponent implements OnInit {
   }
 
   eliminarProducto(id: number): void {
-    const indice = this.productos.findIndex(producto => producto.id === id);    
-    this.productos.splice(indice,1)
-    }
+    const indice = this.productos.findIndex((producto) => producto.id === id);
+    this.productos.splice(indice, 1);
+  }
 
-  
   //Crear nuevo producto
   crearNuevoProducto(): void {
     Swal.fire({
@@ -156,22 +191,31 @@ export class ListarProductosComponent implements OnInit {
       confirmButtonText: 'Guardar',
       cancelButtonText: 'Cancelar',
       preConfirm: () => {
-        const nombre = (document.getElementById('nombre') as HTMLInputElement).value;
-        const descripcion = (document.getElementById('descripcion') as HTMLInputElement).value;
-        const precio = (document.getElementById('precio') as HTMLInputElement).value;
-        const stock = (document.getElementById('stock') as HTMLInputElement).value;
-        const nuevoProducto = { nombre, descripcion, precio, stock };        
+        const nombre = (document.getElementById('nombre') as HTMLInputElement)
+          .value;
+        const descripcion = (
+          document.getElementById('descripcion') as HTMLInputElement
+        ).value;
+        const precio = (document.getElementById('precio') as HTMLInputElement)
+          .value;
+        const stock = (document.getElementById('stock') as HTMLInputElement)
+          .value;
+        const nuevoProducto = { nombre, descripcion, precio, stock };
         this.productos.push(nuevoProducto);
 
-      }
+        const regex = /^[0-9]*$/;
+        if (!regex.test(precio) || !regex.test(stock)) {
+          Swal.showValidationMessage('Precio y stock deben ser números');
+          return false;
+        }
+        return true;
+      },
     }).then((result) => {
-      if (result.isConfirmed && result.value) {     
-        const nuevoAlimento = result.value;           
+      if (result.isConfirmed && result.value) {
+        const nuevoAlimento = result.value;
         Swal.fire('Creado!', 'El producto ha sido creado.', 'success');
         Swal.close();
       }
     });
   }
-    
 }
-
