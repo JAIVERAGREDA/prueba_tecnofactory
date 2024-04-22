@@ -160,27 +160,15 @@ export class ListarProductosComponent implements OnInit {
         const descripcion = (document.getElementById('descripcion') as HTMLInputElement).value;
         const precio = (document.getElementById('precio') as HTMLInputElement).value;
         const stock = (document.getElementById('stock') as HTMLInputElement).value;
-  
-        const nuevoProducto = { nombre, descripcion, precio, stock };
-        console.log('Nuevo producto:', nuevoProducto);
-  
-        return this.alimentosService.agregarAlimento(nuevoProducto).toPromise(); 
+        const nuevoProducto = { nombre, descripcion, precio, stock };        
+        this.productos.push(nuevoProducto);
+
       }
     }).then((result) => {
       if (result.isConfirmed && result.value) {     
-        const nuevoAlimento = result.value;   
-        this.alimentosService.agregarAlimento(nuevoAlimento).subscribe(
-          (data: any) => {
-            console.log('Producto creado:', data);            
-            this.obtenerProductos();            
-            Swal.fire('Creado!', 'El producto ha sido creado.', 'success');
-            Swal.close();
-          },
-          (error: any) => {
-            console.error('Error al crear el producto:', error);            
-            Swal.fire('Error', 'Ha ocurrido un error al crear el producto.', 'error');
-          }
-        );
+        const nuevoAlimento = result.value;           
+        Swal.fire('Creado!', 'El producto ha sido creado.', 'success');
+        Swal.close();
       }
     });
   }
